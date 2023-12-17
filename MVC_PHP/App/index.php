@@ -24,7 +24,7 @@ switch ($url) {
     case 'pessoa/delete':
         PessoaController::delete();
         break;
-        
+
     default:
         echo "Erro 404 - Página não encontrada";
         break;
