@@ -14,6 +14,14 @@ class PessoaController
 
     public static function form()
     {
+        include 'Model/PessoaModel.php';
+        $model = new PessoaModel();
+
+        if (isset($_GET['id']))
+            $model = $model->getById((int) $_GET['id']);
+
+        //var_dump($model);
+
         include 'View/modules/Pessoa/FormPessoa.php';
     }
 
@@ -22,11 +30,24 @@ class PessoaController
         include 'Model/PessoaModel.php';
 
         $model = new PessoaModel();
+
+        $model->id = $_POST['id'];
         $model->nome = $_POST['nome'];
         $model->cpf = $_POST['cpf'];
         $model->data_nascimento = $_POST['data_nascimento'];
 
         $model->save();
+
+        header("Location: /ProjetoPHP/MVC_PHP/App/pessoa");
+    }
+
+    public static function delete()
+    {
+        include 'Model/PessoaModel.php';
+
+        $model = new PessoaModel();
+
+        $model->delete( (int) $_GET['id'] );
 
         header("Location: /ProjetoPHP/MVC_PHP/App/pessoa");
     }

@@ -20,6 +20,11 @@ switch ($url) {
     case 'pessoa/form/save':
         PessoaController::save();
         break;
+
+    case 'pessoa/delete':
+        PessoaController::delete();
+        break;
+        
     default:
         echo "Erro 404 - Página não encontrada";
         break;

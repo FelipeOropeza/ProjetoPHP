@@ -13,14 +13,17 @@
         <legend>Cadastro de Pessoa</legend>
 
         <form method="post" action="form/save">
+
+            <input type="hidden" value="<?= $model->id ?>" name="id">
+
             <label>Nome:</label>
-            <input id="nome" name="nome" type="text">
+            <input id="nome" name="nome" value="<?= $model->nome ?>" type="text">
 
             <label>Cpf:</label>
-            <input id="cpf" name="cpf" type="number">
+            <input id="cpf" name="cpf" value="<?= $model->cpf ?>" type="number">
 
             <label>Data Nascimento:</label>
-            <input id="data_nascimento" name="data_nascimento" type="date">
+            <input id="data_nascimento" name="data_nascimento" value="<?= $model->data_nascimento ?>" type="date">
             <button type="submit">Salvar</button>
         </form>
     </fieldset>

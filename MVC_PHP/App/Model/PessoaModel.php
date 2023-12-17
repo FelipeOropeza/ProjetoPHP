@@ -12,7 +12,12 @@ class PessoaModel
 
         $dao = new PessoaDAO();
 
-        $dao->insert($this);
+        if (empty($this->id))
+        {
+            $dao->insert($this);
+        } else {
+            $dao->update($this);
+        }
     }
 
     public function getAllRows()
@@ -22,5 +27,32 @@ class PessoaModel
         $dao = new PessoaDAO();
 
         $this->rows = $dao->select();
+    }
+
+    public function getById($id)
+    {
+        include 'DAO/PessoaDAO.php';
+
+        $dao = new PessoaDAO();
+
+        $obj = $dao->selectById($id);
+
+        return ($obj) ? $obj : new PessoaModel;
+
+        /*if($obj)
+        {
+            return $obj;
+        } else {
+            return new PessoaModel();
+        } */
+    }
+
+    public function delete(int $id)
+    {
+        include 'DAO/PessoaDAO.php';
+
+        $dao = new PessoaDAO();
+
+        $dao->delete($id);
     }
 }

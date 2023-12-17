@@ -26,7 +26,16 @@ class PessoaDAO
 
     public function update(PessoaModel $model)
     {
+        $sql = "UPDATE pessoa SET nome=?, cpf=?, data_nascimento=? WHERE id=?";
 
+        $stmt = $this->conexao->prepare($sql);
+
+        $stmt->bindValue(1, $model->nome);
+        $stmt->bindValue(2, $model->cpf);
+        $stmt->bindValue(3, $model->data_nascimento);
+        $stmt->bindValue(4, $model->id);
+
+        $stmt->execute();
     }
 
     public function select()
@@ -39,8 +48,24 @@ class PessoaDAO
         return $stmt->fetchAll(PDO::FETCH_CLASS);
     }
 
-    public function delete()
+    public function selectById(int $id)
     {
-        
+        include_once 'Model/PessoaModel.php';
+        $sql = "SELECT * FROM pessoa WHERE id = ?";
+
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bindValue(1, $id);
+        $stmt->execute();
+
+        return $stmt->fetchObject("PessoaModel");
+    }
+
+    public function delete(int $id)
+    {
+        $sql = "DELETE FROM pessoa WHERE id = ?";
+
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bindValue(1, $id);
+        $stmt->execute();
     }
 }
