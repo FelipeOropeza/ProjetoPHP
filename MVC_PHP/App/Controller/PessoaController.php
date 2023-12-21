@@ -1,11 +1,13 @@
 <?php
 
+namespace App\Controller;
+
+use App\Model\PessoaModel;
+
 class PessoaController
 {
     public static function index()
     {
-        include 'Model/PessoaModel.php';
-
         $model = new PessoaModel();
         $model->getAllRows();
         
@@ -14,7 +16,6 @@ class PessoaController
 
     public static function form()
     {
-        include 'Model/PessoaModel.php';
         $model = new PessoaModel();
 
         if (isset($_GET['id']))
@@ -27,8 +28,6 @@ class PessoaController
 
     public static function save()
     {
-        include 'Model/PessoaModel.php';
-
         $model = new PessoaModel();
 
         $model->id = $_POST['id'];
@@ -43,8 +42,6 @@ class PessoaController
 
     public static function delete()
     {
-        include 'Model/PessoaModel.php';
-
         $model = new PessoaModel();
 
         $model->delete( (int) $_GET['id'] );
