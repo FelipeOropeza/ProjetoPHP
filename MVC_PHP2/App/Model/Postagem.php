@@ -42,4 +42,57 @@ class Postagem
 
         return $resultado;
     }
+
+    public static function insert($dadosPost)
+    {
+        if (empty($dadosPost['titulo']) || empty($dadosPost['conteudo'])) {
+            throw new Exception('Preencha todos os campos');
+        }
+
+        $con = Connection::getConn();
+
+        $sql = $con->prepare('INSERT INTO postagem (titulo, conteudo) VALUES (:tit, :cont)');
+        $sql->bindValue(':tit', $dadosPost['titulo']);
+        $sql->bindValue(':cont', $dadosPost['conteudo']);
+        $res = $sql->execute();
+        
+        if ($res == 0){
+            throw new Exception('Falha ao inserir publicação');
+        } 
+
+        return true;
+    }
+
+    public static function update($params)
+    {
+        $con = Connection::getConn();
+
+        $sql = $con->prepare('UPDATE postagem SET titulo = :tit, conteudo = :cont WHERE id = :id');
+        $sql->bindValue(':tit', $params['titulo']);
+        $sql->bindValue(':cont', $params['conteudo']);
+        $sql->bindValue(':id', $params['id']);
+
+        $resultado = $sql->execute();
+
+        if ($resultado == 0){
+            throw new Exception('Falha ao alterar publicação');
+        }
+
+        return true;
+    }
+
+    public static function delete($id)
+    {
+        $con = Connection::getConn();
+
+        $sql = $con->prepare('DELETE FROM postagem WHERE id = :id');
+        $sql->bindValue(':id', $id);
+        $resultado = $sql->execute();
+
+        if ($resultado == 0){
+            throw new Exception('Falha ao deletar publicação');
+        }
+
+        return true;
+    }
 }

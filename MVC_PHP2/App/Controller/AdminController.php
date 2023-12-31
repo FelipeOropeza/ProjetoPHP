@@ -7,8 +7,11 @@ class AdminController
         $loader = new \Twig\Loader\FilesystemLoader('App/View');
         $twig = new \Twig\Environment($loader);
         $template = $twig->load('admin.html');
+        
+        $objPostagens = Postagem::selecionaTodos();
 
         $parametros = array();
+        $parametros['postagens'] = $objPostagens;
 
         $conteudo = $template->render($parametros);
         echo $conteudo;
@@ -27,7 +30,58 @@ class AdminController
     }
 
     public function insert()
+    {   
+        try{
+            Postagem::insert($_POST);
+
+            echo '<script>alert("Publicação inserida com sucesso");</script>';
+            echo '<script>location.href="http://localhost/ProjetoPHP/MVC_PHP2/?pagina=admin&metodo=index"</script>';
+        } catch(Exception $e) {
+            echo '<script>alert("'.$e->getMessage().'");</script>';
+            echo '<script>location.href="http://localhost/ProjetoPHP/MVC_PHP2/?pagina=admin&metodo=create"</script>';
+        }
+    }
+
+    public function change($paramId)
     {
-        var_dump($_POST);
+        $loader = new \Twig\Loader\FilesystemLoader('App/View');
+        $twig = new \Twig\Environment($loader);
+        $template = $twig->load('update.html');
+
+        $post = Postagem::selecionarPorId($paramId['id']);
+
+        $parametros = array();
+        $parametros['id'] = $post->id;
+        $parametros['titulo'] = $post->titulo;
+        $parametros['conteudo'] = $post->conteudo;
+
+        $conteudo = $template->render($parametros);
+        echo $conteudo;
+    }
+
+    public function update()
+    {   
+        try {
+            Postagem::update($_POST);
+
+            echo '<script>alert("Publicação alterada com sucesso");</script>';
+            echo '<script>location.href="http://localhost/ProjetoPHP/MVC_PHP2/?pagina=admin&metodo=index"</script>';
+        } catch(Exception $e) {
+            echo '<script>alert("'.$e->getMessage().'");</script>';
+            echo '<script>location.href="http://localhost/ProjetoPHP/MVC_PHP2/?pagina=admin&metodo=change&id='.$_POST['id'].'"</script>';
+        }
+    }
+
+    public function delete($paramId)
+    {   
+        try{
+            Postagem::delete($paramId['id']);
+
+            echo '<script>alert("Publicação deletada com sucesso");</script>';
+            echo '<script>location.href="http://localhost/ProjetoPHP/MVC_PHP2/?pagina=admin&metodo=index"</script>';
+        } catch(Exception $e) {
+            echo '<script>alert("'.$e->getMessage().'");</script>';
+            echo '<script>location.href="http://localhost/ProjetoPHP/MVC_PHP2/?pagina=admin&metodo=index"</script>';
+        }
     }
 }
